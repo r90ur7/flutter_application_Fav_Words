@@ -4,11 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // ignore: unnecessary_import
 import 'package:flutter/rendering.dart';
+import 'package:i18n_extension/default.i18n.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:i18n_extension/i18n_extension.dart';
+import 'big_card.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(I18n(
+    initialLocale: const Locale('pt', 'BR'), // Defina o idioma inicial
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -175,8 +180,7 @@ class FavoritesPage extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.all(20),
-          child: Text('You have '
-              '${appState.favorites.length} favorites:'),
+          child: Text('You have ${appState.favorites.length} favorites:'.i18n),
         ),
         for (var pair in appState.favorites)
           ListTile(
@@ -184,43 +188,6 @@ class FavoritesPage extends StatelessWidget {
             title: Text(pair.asLowerCase),
           ),
       ],
-    );
-  }
-}
-
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.pair,
-  });
-
-  final WordPair pair;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-      shadows: [
-        BoxShadow(
-          color: Colors.yellow.withOpacity(0.3),
-          spreadRadius: 2,
-          blurRadius: 5,
-          offset: const Offset(0, 3),
-        ),
-      ],
-    );
-
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(
-          pair.asLowerCase,
-          style: style,
-          semanticsLabel: "${pair.first} ${pair.second}",
-        ),
-      ),
     );
   }
 }
